@@ -13,6 +13,7 @@ import runday.domain.RunningRestarted;
 import runday.domain.RunningStarted;
 
 @Entity
+// @EntityListeners(Running.class)
 @Table(name = "Running_table")
 @Data
 //<<< DDD / Aggregate Root
@@ -51,18 +52,22 @@ public class Running {
     }
 
     @PostUpdate
-    public void onPostUpdate(Running running) {
+    public void onPostUpdate() {
 
-        EntityManager entityManager = EntityManagerFactory.createEntityManager();
-        Product oldRunning = entityManager.find(Running.class, running.getId());
+        // EntityManager entityManager = EntityManagerFactory.createEntityManager();
+        // Running oldRunning = entityManager.find(Running.class, running.getId());
+        // TODO: Persistency unit 추가
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Running oldRunning = entityManager.find(Running.class, this.getId());
 
-        if (!oldRunning.getPauseStartTime().equals(product.getPauseStartTime())) {
+        if (!oldRunning.getPauseStartTime().equals(this.getPauseStartTime())) {
             RunningPaused runningPaused = new RunningPaused(this);
             runningPaused.publishAfterCommit();
-        } else if (!oldRunning.getPauseEndTime().equals(product.getPauseEndTime())){
+        } else if (!oldRunning.getPauseEndTime().equals(this.getPauseEndTime())){
             RunningRestarted runningRestarted = new RunningRestarted(this);
             runningRestarted.publishAfterCommit();
-        } else if (!oldRunning.getEndTime().equals(product.getEndTime())){
+        } else if (!oldRunning.getEndTime().equals(this.getEndTime())){
             RunningEnded runningEnded = new RunningEnded(this);
             runningEnded.publishAfterCommit();
         } else {
