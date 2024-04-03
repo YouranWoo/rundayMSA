@@ -26,23 +26,23 @@ public class Running {
 
     private Date startTime;
 
+    private Float startLatitude;
+
+    private Float startLongitude;
+
     private Date pauseStartTime;
 
-    private Date endTime;
+    private Date pauseEndTime;
 
-    private Float startLatitude;
+    private Date totalPauseTime;
+
+    private Date endTime;
 
     private Float endLatitude;
 
     private Float endLongitude;
 
-    private Date pauseEndTime;
-
     private Date runningTime;
-
-    private Date totalPauseTime;
-
-    private Float startLongitude;
 
     @PostPersist
     public void onPostPersist() {

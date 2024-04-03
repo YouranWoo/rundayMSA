@@ -14,8 +14,8 @@ public class LogCreated extends AbstractEvent {
     private Long id;
     private String userId;
     private Date startTime;
-    private Long startLatitude;
-    private Long startLongitude;
+    private Float startLatitude;
+    private Float startLongitude;
 
     public LogCreated(Log aggregate) {
         super(aggregate);

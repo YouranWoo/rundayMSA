@@ -23,6 +23,8 @@ public class Log {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private Long runningId;
+
     private String userId;
 
     private Date startTime;
@@ -43,16 +45,12 @@ public class Log {
 
     private Integer likesCount;
 
-    @Embedded
-    private Photo runningPhoto;
+    private String runningPhoto;
 
     @PostPersist
     public void onPostPersist() {
         LogCreated logCreated = new LogCreated(this);
-        logCreated.publishAfterCommit();
-
-        LogDeleted logDeleted = new LogDeleted(this);
-        logDeleted.publishAfterCommit();
+        // logCreated.publishAfterCommit();
     }
 
     @PostUpdate
@@ -71,6 +69,9 @@ public class Log {
     public void onPostRemove() {
         LogRemoved logRemoved = new LogRemoved(this);
         logRemoved.publishAfterCommit();
+
+        LogDeleted logDeleted = new LogDeleted(this);
+        logDeleted.publishAfterCommit();
     }
 
     @PreRemove
@@ -85,28 +86,18 @@ public class Log {
 
     //<<< Clean Arch / Port Method
     public static void createLog(RunningStarted runningStarted) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
+        
         Log log = new Log();
+        log.setRunningId(runningStarted.getId());
+        log.setUserId(runningStarted.getUserId());
+        log.setStartTime(runningStarted.getStartTime());
+        log.setStartLatitude(runningStarted.getStartLatitude());
+        log.setStartLongitude(runningStarted.getStartLongitude());
+
         repository().save(log);
 
         LogCreated logCreated = new LogCreated(log);
-        logCreated.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
-        
-        repository().findById(runningStarted.get???()).ifPresent(log->{
-            
-            log // do something
-            repository().save(log);
-
-            LogCreated logCreated = new LogCreated(log);
-            logCreated.publishAfterCommit();
-
-         });
-        */
+        // logCreated.publishAfterCommit();
 
     }
 
