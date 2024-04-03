@@ -1,0 +1,342 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Running
+  labels:
+    app: Running
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Running
+  template:
+    metadata:
+      labels:
+        app: Running
+    spec:
+      containers:
+        - name: Running
+          image: username/Running:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Rank
+  labels:
+    app: Rank
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Rank
+  template:
+    metadata:
+      labels:
+        app: Rank
+    spec:
+      containers:
+        - name: Rank
+          image: username/Rank:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: FriendRelation
+  labels:
+    app: FriendRelation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: FriendRelation
+  template:
+    metadata:
+      labels:
+        app: FriendRelation
+    spec:
+      containers:
+        - name: FriendRelation
+          image: username/FriendRelation:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Logging
+  labels:
+    app: Logging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Logging
+  template:
+    metadata:
+      labels:
+        app: Logging
+    spec:
+      containers:
+        - name: Logging
+          image: username/Logging:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Notification
+  labels:
+    app: Notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Notification
+  template:
+    metadata:
+      labels:
+        app: Notification
+    spec:
+      containers:
+        - name: Notification
+          image: username/Notification:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Dashboard
+  labels:
+    app: Dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Dashboard
+  template:
+    metadata:
+      labels:
+        app: Dashboard
+    spec:
+      containers:
+        - name: Dashboard
+          image: username/Dashboard:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: Running
+  labels:
+    app: Running
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: Running
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: Rank
+  labels:
+    app: Rank
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: Rank
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: FriendRelation
+  labels:
+    app: FriendRelation
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: FriendRelation
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: Logging
+  labels:
+    app: Logging
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: Logging
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: Notification
+  labels:
+    app: Notification
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: Notification
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: Dashboard
+  labels:
+    app: Dashboard
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: Dashboard
+
