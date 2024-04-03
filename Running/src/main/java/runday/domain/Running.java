@@ -51,18 +51,26 @@ public class Running {
     }
 
     @PostUpdate
-    public void onPostUpdate() {
-        RunningEnded runningEnded = new RunningEnded(this);
-        runningEnded.publishAfterCommit();
+    public void onPostUpdate(Running running) {
 
-        RunningPaused runningPaused = new RunningPaused(this);
-        runningPaused.publishAfterCommit();
+        EntityManager entityManager = EntityManagerFactory.createEntityManager();
+        Product oldRunning = entityManager.find(Running.class, running.getId());
 
-        RunningRestarted runningRestarted = new RunningRestarted(this);
-        runningRestarted.publishAfterCommit();
-
-        RunningForcedStop runningForcedStop = new RunningForcedStop(this);
-        runningForcedStop.publishAfterCommit();
+        if (!oldRunning.getPauseStartTime().equals(product.getPauseStartTime())) {
+            RunningPaused runningPaused = new RunningPaused(this);
+            runningPaused.publishAfterCommit();
+        } else if (!oldRunning.getPauseEndTime().equals(product.getPauseEndTime())){
+            RunningRestarted runningRestarted = new RunningRestarted(this);
+            runningRestarted.publishAfterCommit();
+        } else if (!oldRunning.getEndTime().equals(product.getEndTime())){
+            RunningEnded runningEnded = new RunningEnded(this);
+            runningEnded.publishAfterCommit();
+        } else {
+            RunningForcedStop runningForcedStop = new RunningForcedStop(this);
+            runningForcedStop.publishAfterCommit();
+        }
+        
+        entityManager.close();
     }
 
     public static RunningRepository repository() {
