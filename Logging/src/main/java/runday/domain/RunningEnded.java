@@ -11,11 +11,9 @@ public class RunningEnded extends AbstractEvent {
 
     private Long id;
     private Date endTime;
-    private Long endLatitude;
-    private Long endLongitude;
-    private Date runningTime;
     private Float endLatitude;
     private Float endLongitude;
+    private Date runningTime;
     private Date totalPauseTime;
     private Date startTime;
 }
