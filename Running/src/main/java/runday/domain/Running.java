@@ -11,6 +11,8 @@ import runday.domain.RunningForcedStop;
 import runday.domain.RunningPaused;
 import runday.domain.RunningRestarted;
 import runday.domain.RunningStarted;
+import runday.infra.InMemoryDbFixture;
+import java.util.Arrays;
 
 @Entity
 // @EntityListeners(Running.class)
@@ -51,17 +53,17 @@ public class Running {
         runningStarted.publishAfterCommit();
     }
 
-    @PostUpdate
+    // @PostUpdate
+    @PreUpdate
     public void onPostUpdate() {
-
-        // EntityManager entityManager = EntityManagerFactory.createEntityManager();
-        // Running oldRunning = entityManager.find(Running.class, running.getId());
-        // TODO: Persistency unit 추가
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        Running oldRunning = entityManager.find(Running.class, this.getId());
-
-        if (!oldRunning.getPauseStartTime().equals(this.getPauseStartTime())) {
+        
+        InMemoryDbFixture fixture = new InMemoryDbFixture("myScope", Arrays.asList(Running.class));
+        EntityManager entityManager = fixture.createEntityManager();
+        Running oldRunning = entityManager.find(Running.class, Long.valueOf(this.getId()));
+        
+        // TODO: oldRunning NULL 해결
+        if ((oldRunning.getPauseStartTime() == null && this.getPauseStartTime() != null) || 
+    (oldRunning.getPauseStartTime() != null && !oldRunning.getPauseStartTime().equals(this.getPauseStartTime()))) {
             RunningPaused runningPaused = new RunningPaused(this);
             runningPaused.publishAfterCommit();
         } else if (!oldRunning.getPauseEndTime().equals(this.getPauseEndTime())){
