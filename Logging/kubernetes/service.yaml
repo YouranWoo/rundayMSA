@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: Logging
+  name: logging
   labels:
-    app: Logging
+    app: logging
 spec:
   ports:
     - port: 8080
       targetPort: 8080
   selector:
-    app: Logging
+    app: logging
