@@ -10,8 +10,11 @@ public class LogCompleted extends AbstractEvent {
 
     private Long id;
     private String userId;
+    private Date startTime;
+    private Float startLatitude;
+    private Float startLongitude;
     private Date endTime;
-    private Long endLatitude;
-    private Long endLongitude;
+    private Float endLatitude;
+    private Float endLongitude;
     private Long runningTime;
 }

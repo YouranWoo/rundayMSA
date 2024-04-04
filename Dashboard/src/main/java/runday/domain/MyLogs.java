@@ -21,5 +21,5 @@ public class MyLogs {
     private Date runningTime;
     private String userDiary;
     private Integer likesCount;
-    private BigDecimal photo;
+    private String photo;
 }
