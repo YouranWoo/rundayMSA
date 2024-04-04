@@ -50,7 +50,7 @@ public class Log {
     @PostPersist
     public void onPostPersist() {
         LogCreated logCreated = new LogCreated(this);
-        // logCreated.publishAfterCommit();
+        logCreated.publishAfterCommit();
     }
 
     @PostUpdate

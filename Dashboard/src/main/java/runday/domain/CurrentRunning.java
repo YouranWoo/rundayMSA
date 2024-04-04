@@ -13,14 +13,14 @@ import lombok.Data;
 public class CurrentRunning {
 
     @Id
-    //@GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     private Date runningStartTime;
-    private Long runningStartLatitude;
-    private Long runningStartLongitude;
+    private Float runningStartLatitude;
+    private Float runningStartLongitude;
     private Date runningEndTime;
-    private Long runningEndLatitude;
-    private Long runningEndLongitude;
+    private Float runningEndLatitude;
+    private Float runningEndLongitude;
     private Date runningTime;
 }
