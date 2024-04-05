@@ -23,12 +23,17 @@ spec:
           resources:
             requests:
               cpu: "200m"
+
+              
           env:
             - name: RUNNING_LOG_LEVEL
               valueFrom:
                 configMapKeyRef:
                    name: config-dev
-                   key: RUNNING_LOG_LEVEL    
+                   key: RUNNING_LOG_LEVEL
+          # volumeMounts:
+          # - mountPath: "/mnt/data"
+          #   name: volume
           # readinessProbe:
           #   httpGet:
           #     path: '/actuator/health'
@@ -37,11 +42,16 @@ spec:
           #   timeoutSeconds: 2
           #   periodSeconds: 5
           #   failureThreshold: 10
-          # livenessProbe:
-          #   httpGet:
-          #     path: '/actuator/health'
-          #     port: 8080
-          #   initialDelaySeconds: 120
-          #   timeoutSeconds: 2
-          #   periodSeconds: 5
-          #   failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 15
+            timeoutSeconds: 2
+            successThreshold: 1
+            periodSeconds: 5
+            failureThreshold: 3
+      # volumes:
+      # - name: volume
+      #   persistentVolumeClaim:
+      #     claimName: nfs-pvc      

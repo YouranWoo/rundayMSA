@@ -132,6 +132,19 @@ public class Log {
     //>>> Clean Arch / Port Method
     //<<< Clean Arch / Port Method
     public static void removeLog(RunningForcedStop runningForcedStop) {
+
+        repository().findById(Long.valueOf(runningForcedStop.getId())).ifPresent(log->{
+            
+            log.setEndTime(runningForcedStop.getPauseStartTime());
+            repository().save(log);
+
+            LogRemoved logRemoved = new LogRemoved(log);
+            logRemoved.publishAfterCommit();
+         });
+        // LogRemoved logRemoved = new LogRemoved(log);
+        // logRemoved.publishAfterCommit();
+
+
         //implement business logic here:
 
         /** Example 1:  new item 

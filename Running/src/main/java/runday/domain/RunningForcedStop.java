@@ -12,6 +12,7 @@ import runday.infra.AbstractEvent;
 public class RunningForcedStop extends AbstractEvent {
 
     private Long id;
+    private Date pauseStartTime;
     private Date endTime;
 
     public RunningForcedStop(Running aggregate) {

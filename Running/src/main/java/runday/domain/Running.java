@@ -53,32 +53,38 @@ public class Running {
         runningStarted.publishAfterCommit();
     }
 
-    // @PostUpdate
-    @PreUpdate
-    public void onPostUpdate() {
-        
-        InMemoryDbFixture fixture = new InMemoryDbFixture("myScope", Arrays.asList(Running.class));
-        EntityManager entityManager = fixture.createEntityManager();
-        Running oldRunning = entityManager.find(Running.class, Long.valueOf(this.getId()));
-        
-        // TODO: oldRunning NULL 해결
-        if ((oldRunning.getPauseStartTime() == null && this.getPauseStartTime() != null) || 
-    (oldRunning.getPauseStartTime() != null && !oldRunning.getPauseStartTime().equals(this.getPauseStartTime()))) {
-            RunningPaused runningPaused = new RunningPaused(this);
-            runningPaused.publishAfterCommit();
-        } else if (!oldRunning.getPauseEndTime().equals(this.getPauseEndTime())){
-            RunningRestarted runningRestarted = new RunningRestarted(this);
-            runningRestarted.publishAfterCommit();
-        } else if (!oldRunning.getEndTime().equals(this.getEndTime())){
-            RunningEnded runningEnded = new RunningEnded(this);
-            runningEnded.publishAfterCommit();
-        } else {
-            RunningForcedStop runningForcedStop = new RunningForcedStop(this);
-            runningForcedStop.publishAfterCommit();
-        }
-        
-        entityManager.close();
+    @PostUpdate
+    public void onPostUpdate(){
+        RunningPaused runningPaused = new RunningPaused(this);
+        runningPaused.publishAfterCommit();
     }
+
+    // // @PostUpdate
+    // @PreUpdate
+    // public void onPostUpdate() {
+        
+    //     InMemoryDbFixture fixture = new InMemoryDbFixture("myScope", Arrays.asList(Running.class));
+    //     EntityManager entityManager = fixture.createEntityManager();
+    //     Running oldRunning = entityManager.find(Running.class, Long.valueOf(this.getId()));
+        
+    //     // TODO: oldRunning NULL 해결
+    //     if ((oldRunning.getPauseStartTime() == null && this.getPauseStartTime() != null) || 
+    // (oldRunning.getPauseStartTime() != null && !oldRunning.getPauseStartTime().equals(this.getPauseStartTime()))) {
+    //         RunningPaused runningPaused = new RunningPaused(this);
+    //         runningPaused.publishAfterCommit();
+    //     } else if (!oldRunning.getPauseEndTime().equals(this.getPauseEndTime())){
+    //         RunningRestarted runningRestarted = new RunningRestarted(this);
+    //         runningRestarted.publishAfterCommit();
+    //     } else if (!oldRunning.getEndTime().equals(this.getEndTime())){
+    //         RunningEnded runningEnded = new RunningEnded(this);
+    //         runningEnded.publishAfterCommit();
+    //     } else {
+    //         RunningForcedStop runningForcedStop = new RunningForcedStop(this);
+    //         runningForcedStop.publishAfterCommit();
+    //     }
+        
+    //     entityManager.close();
+    // }
 
     public static RunningRepository repository() {
         RunningRepository runningRepository = RunningApplication.applicationContext.getBean(
@@ -91,28 +97,22 @@ public class Running {
     public static void forceStopRunningIfMoreThan10Min(
         RunningPaused runningPaused
     ) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Running running = new Running();
-        repository().save(running);
-
-        RunningForcedStop runningForcedStop = new RunningForcedStop(running);
-        runningForcedStop.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
         
-        repository().findById(runningPaused.get???()).ifPresent(running->{
+        repository().findById(Long.valueOf(runningPaused.getId())).ifPresent(running->{
             
-            running // do something
+            running.setId(runningPaused.getId());
+            running.setPauseStartTime(runningPaused.getPauseStartTime());
             repository().save(running);
 
             RunningForcedStop runningForcedStop = new RunningForcedStop(running);
             runningForcedStop.publishAfterCommit();
 
          });
-        */
+        // Running running = new Running();
+        // repository().save(running);
+
+        // RunningForcedStop runningForcedStop = new RunningForcedStop(running);
+        // runningForcedStop.publishAfterCommit();
 
     }
     //>>> Clean Arch / Port Method

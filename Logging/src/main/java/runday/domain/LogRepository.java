@@ -6,4 +6,6 @@ import runday.domain.*;
 
 //<<< PoEAA / Repository
 @RepositoryRestResource(collectionResourceRel = "logs", path = "logs")
-public interface LogRepository extends PagingAndSortingRepository<Log, Long> {}
+public interface LogRepository extends PagingAndSortingRepository<Log, Long> {
+    void deleteById(Long id);
+}
