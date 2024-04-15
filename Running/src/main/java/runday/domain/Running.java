@@ -16,13 +16,13 @@ import java.util.Arrays;
 
 @Entity
 // @EntityListeners(Running.class)
-@Table(name = "Running_table")
+@Table(name = "RUNNING", schema = "public")
 @Data
 //<<< DDD / Aggregate Root
 public class Running {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String userId;
